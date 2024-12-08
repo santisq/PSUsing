@@ -1,4 +1,4 @@
-name: PSTree Workflow
+name: PSUsing Workflow
 on:
   push:
     branches:

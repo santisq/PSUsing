@@ -69,7 +69,7 @@ The cmdlet can also process pipeline input, for example:
 }
 ```
 
-And you can span different processing methods:
+And can span different processing methods:
 
 ```powershell
 0..10 | use ($myobj = [DisposableObject]::new()) {
@@ -79,7 +79,7 @@ And you can span different processing methods:
 }
 ```
 
-A [`CancellationToken`][cancellation] is also available for .NET methods that support it.
+A [`CancellationToken`][cancellation] is available for .NET methods that support it.
 The cancellation source is tied to the cmdlet's [`StopProcessing()` method][stopprocessing]:
 
 ```powershell

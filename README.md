@@ -6,7 +6,7 @@
 [C# `using` statement][csusing] for PowerShell
 
 </sub>
-<br/><br/>
+<br/>
 
 [![build][build_badge]][build_ref]
 [![codecov][codecov_badge]][codecov_ref]

@@ -22,7 +22,7 @@ __Resource cleanup is enforced for the same scenarios as the ones detailed in [`
 - When the pipeline execution finishes normally without terminating error.
 - When the pipeline execution is interrupted due to terminating error.
 - When the pipeline is halted by `Select-Object -First`.
-- When the pipeline is being stopped by <kbd>`CTRL + C`</kbd> or `StopProcessing()`.
+- When the pipeline is being stopped by <kbd>CTRL + C</kbd> or `StopProcessing()`.
 
 ## Documentation
 

@@ -66,6 +66,7 @@ public sealed class UseObjectCommand : PSCmdlet, IDisposable
     private static ScriptBlock ConvertToProcessBlockIfUnnamed(ScriptBlock scriptBlock)
     {
         ScriptBlockAst sbAst = (ScriptBlockAst)scriptBlock.Ast;
+
         if (sbAst is not { BeginBlock: null, ProcessBlock: null })
         {
             return scriptBlock;

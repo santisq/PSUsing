@@ -27,8 +27,12 @@ public sealed class UseObjectCommand : PSCmdlet, IDisposable
     [Parameter]
     public SwitchParameter UseLocalScope { get; set; }
 
-    [Parameter]
+    [Parameter(ParameterSetName = "Token")]
     public SwitchParameter CancellationToken { get; set; }
+
+    [Parameter(ParameterSetName = "Token")]
+    [ValidateRange(1, int.MaxValue)]
+    public int TimeoutSeconds { get; set; }
 
     protected override void BeginProcessing()
     {
@@ -39,7 +43,8 @@ public sealed class UseObjectCommand : PSCmdlet, IDisposable
 
         if (CancellationToken.IsPresent)
         {
-            _src = new CancellationTokenSource();
+            _src = new CancellationTokenSource(
+                TimeoutSeconds > 0 ? TimeoutSeconds * 1000 : -1);
             builder.Append(", $__token");
             args.Add(_src.Token);
         }

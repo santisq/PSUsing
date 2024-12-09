@@ -3,9 +3,7 @@
 <div align="center">
 <sub>
 
-[C# `using` statement](https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/statements/using) for PowerShell
-
-<a href="https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/statements/using">C# `using` statement</a> for PowerShell
+[C# `using` statement][csusing] for PowerShell
 
 </sub>
 <br/><br/>
@@ -222,3 +220,4 @@ Contributions are more than welcome, if you wish to contribute, fork this reposi
 [license_badge]: https://img.shields.io/github/license/santisq/PSUsing
 [license_ref]: https://github.com/santisq/PSUsing/blob/main/LICENSE
 [cleanblock]: https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_functions_advanced_methods#clean
+[csusing]: https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/statements/using

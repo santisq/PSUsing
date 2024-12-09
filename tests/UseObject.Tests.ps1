@@ -24,6 +24,29 @@ Describe 'Use-Object' {
         $disposable.Disposed | Should -Be $true
     }
 
+
+    It 'Disposes an object on terminating errors' {
+        $disposable = [TestDisposable]::new()
+
+        {
+            Use-Object ($disposable) {
+                throw
+            }
+        } | Should -Throw
+
+        $disposable.Disposed | Should -Be $true
+
+        $disposable = [TestDisposable]::new()
+
+        {
+            Use-Object ($disposable) {
+                Write-Error 'an error'
+            }
+        } | Should -Throw
+
+        $disposable.Disposed | Should -Be $true
+    }
+
     It 'Takes pipeline input' {
         0..10 | Use-Object ($disposable = [TestDisposable]::new()) { $_ } |
             Should -BeExactly (0..10)

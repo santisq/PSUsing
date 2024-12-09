@@ -2,38 +2,38 @@
 
 <div align="center">
 <sub>
-<a href="https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/statements/using">C# using statement</a> for PowerShell
+<a href="https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/statements/using">C# `using` statement</a> for PowerShell
 </sub>
 <br/><br/>
 
-[![build](https://github.com/santisq/PSUsing/actions/workflows/ci.yml/badge.svg)](https://github.com/santisq/PSUsing/actions/workflows/ci.yml)
-[![codecov](https://codecov.io/gh/santisq/PSUsing/branch/main/graph/badge.svg?token=b51IOhpLfQ)](https://codecov.io/gh/santisq/PSUsing)
-[![PowerShell Gallery](https://img.shields.io/powershellgallery/dt/PSUsing?color=%23008FC7)](https://www.powershellgallery.com/packages/PSUsing)
-[![LICENSE](https://img.shields.io/github/license/santisq/PSUsing)](https://github.com/santisq/PSUsing/blob/main/LICENSE)
+[![build][build_badge]][build_ref]
+[![codecov][codecov_badge]][codecov_ref]
+[![PowerShell Gallery][gallery_badge]][gallery_ref]
+[![LICENSE][license_badge]][license_ref]
 
 </div>
 
-PSTree is a PowerShell Module that includes the `Get-PSTree` cmdlet that intends to emulate the [`tree` command](https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/tree) with added functionalities to calculate the __folders size__ as well as __recursive folders size__.
+PSUsing is a little PowerShell Module that intends to solve an issue particularly found before the addition of [`clean` block][cleanblock] in PowerShell 7.3. The clean block is a convenient way for users to clean up resources that span across the begin, process, and end blocks. It's semantically similar to a finally block that covers all other named blocks of a script function or a script cmdlet. Resource cleanup is enforced for the following scenarios:
 
 ## Documentation
 
-Check out [__the docs__](./docs/en-US/Get-PSTree.md) for information about how to use this Module. For customizing the cmdlet's rendering output see [__about_TreeStyle__](./docs/en-US/about_TreeStyle.md).
+Check out [__the docs__](./docs/en-US/Use-Object.md) for information about how to use this Module.
 
 ## Installation
 
 ### Gallery
 
-The module is available through the [PowerShell Gallery](https://www.powershellgallery.com/packages/PSTree):
+The module is available through the [PowerShell Gallery][gallery_ref]:
 
 ```powershell
-Install-Module PSTree -Scope CurrentUser
+Install-Module PSUsing -Scope CurrentUser
 ```
 
 ### Source
 
 ```powershell
-git clone 'https://github.com/santisq/PSTree.git'
-Set-Location ./PSTree
+git clone 'https://github.com/santisq/PSUsing.git'
+Set-Location ./PSUsing
 ./build.ps1
 ```
 
@@ -208,3 +208,13 @@ d----         66.42 KB     └── bin
 ## Contributing
 
 Contributions are more than welcome, if you wish to contribute, fork this repository and submit a pull request with the changes.
+
+[codecov_badge]: https://codecov.io/gh/santisq/PSUsing/branch/main/graph/badge.svg?token=b51IOhpLfQ
+[codecov_ref]: https://codecov.io/gh/santisq/PSUsing
+[build_badge]: https://github.com/santisq/PSUsing/actions/workflows/ci.yml/badge.svg
+[build_ref]: https://github.com/santisq/PSUsing/actions/workflows/ci.yml
+[gallery_badge]: https://img.shields.io/powershellgallery/dt/PSUsing?color=%23008FC7
+[gallery_ref]: https://www.powershellgallery.com/packages/PSUsing
+[license_badge]: https://img.shields.io/github/license/santisq/PSUsing
+[license_ref]: https://github.com/santisq/PSUsing/blob/main/LICENSE
+[cleanblock]: https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_functions_advanced_methods#clean

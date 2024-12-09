@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Management.Automation;
 using System.Management.Automation.Language;
@@ -22,42 +21,37 @@ public sealed class UseObjectCommand : PSCmdlet, IDisposable
     public IDisposable? Disposable { get; set; }
 
     [Parameter(Mandatory = true, Position = 1)]
+    [Alias("sb")]
     public ScriptBlock ScriptBlock { get; set; } = null!;
 
     [Parameter]
+    [Alias("ls")]
     public SwitchParameter UseLocalScope { get; set; }
 
-    [Parameter(ParameterSetName = "Token")]
-    public SwitchParameter CancellationToken { get; set; }
-
-    [Parameter(ParameterSetName = "Token")]
+    [Parameter]
     [ValidateRange(1, int.MaxValue)]
-    public int TimeoutSeconds { get; set; }
+    [Alias("ct", "ts")]
+    public int CancellationTimeout { get; set; } = -1;
 
     protected override void BeginProcessing()
     {
-        List<object> args = [ConvertToProcessBlockIfUnnamed(ScriptBlock)];
-
-        StringBuilder builder = new StringBuilder()
-            .Append("param($__sb");
-
-        if (CancellationToken.IsPresent)
+        if (CancellationTimeout != -1)
         {
-            _src = new CancellationTokenSource(
-                TimeoutSeconds > 0 ? TimeoutSeconds * 1000 : -1);
-            builder.Append(", $__token");
-            args.Add(_src.Token);
+            CancellationTimeout *= 1000;
         }
 
-        builder
-            .Append(") ")
+        _src = new CancellationTokenSource(CancellationTimeout);
+
+        StringBuilder builder = new StringBuilder()
+            .AppendLine("param($__sb, $__token)")
             .Append(UseLocalScope.IsPresent ? "." : "&")
-            .Append(" $__sb")
-            .Append(_src != null ? " $__token" : null);
+            .Append(" $__sb $__token");
 
         _pipe = ScriptBlock
             .Create(builder.ToString())
-            .GetSteppablePipeline(CommandOrigin.Internal, [.. args]);
+            .GetSteppablePipeline(
+                CommandOrigin.Internal,
+                [ConvertToProcessBlockIfUnnamed(ScriptBlock), _src.Token]);
 
         _pipe.Begin(this);
     }

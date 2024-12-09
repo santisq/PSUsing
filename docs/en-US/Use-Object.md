@@ -19,8 +19,7 @@ Use-Object
     [[-Disposable] <IDisposable>]
     [-ScriptBlock] <ScriptBlock>
     [-UseLocalScope]
-    [-CancellationToken]
-    [-TimeoutSeconds <Int32>]
+    [-CancellationTimeout <Int32>]
     [<CommonParameters>]
 ```
 
@@ -32,29 +31,13 @@ Use-Object
 
 ### Example 1
 
-```powershell
+```
 PS C:\> {{ Add example code here }}
 ```
 
 {{ Add example description here }}
 
 ## PARAMETERS
-
-### -CancellationToken
-
-{{ Fill CancellationToken Description }}
-
-```yaml
-Type: SwitchParameter
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: False
-Accept pipeline input: False
-Accept wildcard characters: False
-```
 
 ### -Disposable
 
@@ -95,7 +78,7 @@ Accept wildcard characters: False
 ```yaml
 Type: ScriptBlock
 Parameter Sets: (All)
-Aliases:
+Aliases: sb
 
 Required: True
 Position: 1
@@ -111,7 +94,7 @@ Accept wildcard characters: False
 ```yaml
 Type: SwitchParameter
 Parameter Sets: (All)
-Aliases:
+Aliases: ls
 
 Required: False
 Position: Named
@@ -120,14 +103,14 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -TimeoutSeconds
+### -CancellationTimeout
 
-{{ Fill TimeoutSeconds Description }}
+{{ Fill CancellationTimeout Description }}
 
 ```yaml
 Type: Int32
 Parameter Sets: (All)
-Aliases:
+Aliases: ct, ts
 
 Required: False
 Position: Named

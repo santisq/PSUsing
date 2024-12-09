@@ -15,7 +15,14 @@
 
 </div>
 
-PSUsing is a little PowerShell Module that intends to solve an issue particularly found before the addition of the [`clean` block][cleanblock] in PowerShell 7.3, `Use-Object` offers a safe way to automatically clean-up resources while processing pipeline input, even when spanning the different [__Input processing methods__][inputmethods].
+PSUsing is a little PowerShell Module that offers an easy way to invoke a script block that can span different [__Input processing methods__][inputmethods] and automatically clean-up resources when completed.
+
+__Resource cleanup is enforced for the same scenarios as the ones detailed in [`clean` block][cleanblock]__:
+
+- When the pipeline execution finishes normally without terminating error.
+- When the pipeline execution is interrupted due to terminating error.
+- When the pipeline is halted by `Select-Object -First`.
+- When the pipeline is being stopped by <kbd>`CTRL + C`</kbd> or `StopProcessing()`.
 
 ## Documentation
 
@@ -41,9 +48,71 @@ Set-Location ./PSUsing
 
 ## Requirements
 
-Compatible with __Windows PowerShell v5.1__ and [__PowerShell 7+__](https://github.com/PowerShell/PowerShell).
+Compatible with __Windows PowerShell v5.1__ and [__PowerShell 7+__][psgithub].
 
 ## Usage
+
+The most common pattern would be:
+
+```powershell
+use ($myobj = [DisposableObject]::new()) {
+   # do stuff with:
+   $myObj
+}
+```
+
+The cmdlet can also process pipeline input, for example:
+
+```powershell
+0..10 | use ($myobj = [DisposableObject]::new()) {
+   $myObj.DoStuff($_)
+}
+```
+
+And you can span different processing methods:
+
+```powershell
+0..10 | use ($myobj = [DisposableObject]::new()) {
+   begin { 'begin' }
+   process { $myObj.DoStuff($_) }
+   end { 'end' }
+}
+```
+
+A [`CancellationToken`][cancellation] is also available for .NET methods that support it.
+The cancellation source is tied to the cmdlet's [`StopProcessing()` method][stopprocessing]:
+
+```powershell
+# can CTRL+C out of this
+use -sb {
+   param($token)
+   
+   [System.Threading.Tasks.Task]::Delay(-1, $token).Wait()
+}
+
+# can stop this
+$job = Start-Job {
+   use -sb {
+      param($token)
+
+      [System.Threading.Tasks.Task]::Delay(-1, $token).Wait()
+   }
+}
+
+Start-Sleep 1
+$job | Stop-Job
+```
+
+The token can be cancelled on a timeout too:
+
+```powershell
+# would throw a `TaskCanceledException` after 5 seconds
+use -ct 5 -sb {
+   param($token)
+
+   [System.Threading.Tasks.Task]::Delay(-1, $token).GetAwaiter().GetResult()
+}
+```
 
 ## Contributing
 
@@ -59,4 +128,7 @@ Contributions are welcome, if you wish to contribute, fork this repository and s
 [license_ref]: https://github.com/santisq/PSUsing/blob/main/LICENSE
 [cleanblock]: https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_functions_advanced_methods#clean
 [csusing]: https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/statements/using
-[inputmethods]: https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_functions_advanced_methods?view=powershell-7.4#input-processing-methods
+[inputmethods]: https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_functions_advanced_methods#input-processing-methods
+[psgithub]: https://github.com/PowerShell/PowerShell
+[cancellation]: https://learn.microsoft.com/en-us/dotnet/api/system.threading.cancellationtoken
+[stopprocessing]: https://learn.microsoft.com/en-us/dotnet/api/system.management.automation.cmdlet.stopprocessing

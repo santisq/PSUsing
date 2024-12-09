@@ -35,7 +35,6 @@ Describe 'Use-Object' {
         } | Should -Throw
 
         $disposable.Disposed | Should -Be $true
-
         $disposable = [TestDisposable]::new()
 
         {
@@ -78,7 +77,7 @@ Describe 'Use-Object' {
         $job = Start-Job {
             Import-Module $using:manifestPath
 
-            Use-Object -CancellationToken -ScriptBlock {
+            Use-Object -ScriptBlock {
                 param($token)
 
                 [System.Threading.Tasks.Task]::Delay(-1, $token).
@@ -98,27 +97,35 @@ Describe 'Use-Object' {
         $disposable = [TestDisposable]::new()
 
         {
-            Use-Object ($disposable) {
+            Use-Object ($disposable) -CancellationTimeout 5 {
                 param($token)
 
                 [System.Threading.Tasks.Task]::Delay(-1, $token).
                     GetAwaiter().GetResult()
-            } -CancellationToken -TimeoutSeconds 5
+            }
         } | Should -Throw
 
         $disposable.Disposed | Should -Be $true
         $disposable = [TestDisposable]::new()
 
         {
-            0..10 | Use-Object ($disposable) {
+            0..10 | Use-Object ($disposable) -CancellationTimeout 5 {
                 param($token)
 
                 [System.Threading.Tasks.Task]::Delay(1000, $token).
                     GetAwaiter().GetResult()
 
                 $_
-            } -CancellationToken -TimeoutSeconds 5 | Should -BeExactly (0..4)
+            } | Should -BeExactly (0..4)
         } | Should -Throw
+
+        $disposable.Disposed | Should -Be $true
+    }
+
+    It 'Disposes an object on StopUpstreamCommandsException' {
+        0..10 | Use-Object ($disposable = [TestDisposable]::new()) {
+            $_
+        } | Select-Object -First 5 | Should -BeExactly (0..4)
 
         $disposable.Disposed | Should -Be $true
     }

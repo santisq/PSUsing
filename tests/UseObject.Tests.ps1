@@ -1,19 +1,21 @@
 ﻿$ErrorActionPreference = 'Stop'
 
-$moduleName = (Get-Item ([IO.Path]::Combine($PSScriptRoot, '..', 'module', '*.psd1'))).BaseName
-$manifestPath = [IO.Path]::Combine($PSScriptRoot, '..', 'output', $moduleName)
-
-Import-Module $manifestPath
-
-class TestDisposable : IDisposable {
-    [bool] $Disposed
-
-    [void] Dispose() {
-        $this.Disposed = $true
-    }
-}
-
 Describe 'Use-Object' {
+    BeforeAll {
+        $moduleName = (Get-Item ([IO.Path]::Combine($PSScriptRoot, '..', 'module', '*.psd1'))).BaseName
+        $manifestPath = [IO.Path]::Combine($PSScriptRoot, '..', 'output', $moduleName)
+
+        Import-Module $manifestPath
+
+        class TestDisposable : IDisposable {
+            [bool] $Disposed
+
+            [void] Dispose() {
+                $this.Disposed = $true
+            }
+        }
+    }
+
     It 'Disposes an object' {
         Use-Object ($disposable = [TestDisposable]::new()) {
             $disposable.Disposed | Should -Be $false

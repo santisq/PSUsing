@@ -29,7 +29,7 @@
     Copyright         = '(c) Santiago Squarzon. All rights reserved.'
 
     # Description of the functionality provided by this module
-    Description       = 'PowerShell version of C# using statement'
+    Description       = 'C# using statement for PowerShell'
 
     # Minimum version of the PowerShell engine required by this module
     PowerShellVersion = '5.1'

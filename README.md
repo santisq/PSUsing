@@ -1,7 +1,9 @@
 <h1 align="center">PSUsing</h1>
 
 <div align="center">
-<sub>PowerShell version of <a href="https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/statements/using">C# using statement</a></sub>
+<sub>
+<a href="https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/statements/using">C# using statement</a> for PowerShell
+</sub>
 <br/><br/>
 
 [![build](https://github.com/santisq/PSUsing/actions/workflows/ci.yml/badge.svg)](https://github.com/santisq/PSUsing/actions/workflows/ci.yml)

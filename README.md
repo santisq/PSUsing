@@ -15,7 +15,7 @@
 
 </div>
 
-PSUsing is a little PowerShell Module that offers an easy way to invoke a script block that can span different [__Input processing methods__][inputmethods] and automatically clean-up resources when completed.
+PSUsing is a little PowerShell Module that provides an easy way to invoke a script block that can span different [__Input processing methods__][inputmethods] and automatically clean-up resources when completed.
 
 __Resource cleanup is enforced for the same scenarios as the ones detailed in [`clean` block][cleanblock]__:
 
@@ -52,7 +52,7 @@ Compatible with __Windows PowerShell v5.1__ and [__PowerShell 7+__][psgithub].
 
 ## Usage
 
-The most common pattern would be:
+### The most common pattern would be
 
 ```powershell
 use ($myobj = [DisposableObject]::new()) {
@@ -61,7 +61,7 @@ use ($myobj = [DisposableObject]::new()) {
 }
 ```
 
-The cmdlet can also process pipeline input, for example:
+### The cmdlet can also process pipeline input, for example
 
 ```powershell
 0..10 | use ($myobj = [DisposableObject]::new()) {
@@ -69,7 +69,7 @@ The cmdlet can also process pipeline input, for example:
 }
 ```
 
-And can span different processing methods:
+### And can span different processing methods
 
 ```powershell
 0..10 | use ($myobj = [DisposableObject]::new()) {
@@ -79,8 +79,10 @@ And can span different processing methods:
 }
 ```
 
-A [`CancellationToken`][cancellation] is available for .NET methods that support it.
-The cancellation source is tied to the cmdlet's [`StopProcessing()` method][stopprocessing]:
+### A [`CancellationToken`][cancellation] is available for .NET methods that support it
+
+> [!NOTE]
+> The cancellation source is tied to the cmdlet's [`StopProcessing()` method][stopprocessing].
 
 ```powershell
 # can CTRL+C out of this
@@ -103,7 +105,7 @@ Start-Sleep 1
 $job | Stop-Job
 ```
 
-The token can be cancelled on a timeout too:
+### The token can be cancelled on a timeout too
 
 ```powershell
 # would throw a `TaskCanceledException` after 5 seconds
